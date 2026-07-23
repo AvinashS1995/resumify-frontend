@@ -113,6 +113,116 @@ From the project folder:
 npm install
 ```
 
+## Tailwind CSS Setup
+
+This project uses Tailwind CSS for styling. If you are setting up Tailwind in a fresh Angular project, follow these steps.
+
+### Step 1: Install Tailwind CSS
+
+Open the project terminal and run:
+
+```bash
+npm install tailwindcss @tailwindcss/postcss postcss --save-dev
+```
+
+### Step 2: Create PostCSS Config
+
+Create a `.postcssrc.json` file in the project root, at the same level as `package.json`.
+
+Your folder should look like this:
+
+```text
+resumify-frontend/
+  src/
+  angular.json
+  package.json
+  .postcssrc.json
+```
+
+Add this content to `.postcssrc.json`:
+
+```json
+{
+  "plugins": {
+    "@tailwindcss/postcss": {}
+  }
+}
+```
+
+### Step 3: Import Tailwind
+
+Open:
+
+```text
+src/styles.css
+```
+
+Add the Tailwind import:
+
+```css
+@import "tailwindcss";
+```
+
+If your Angular project uses `styles.scss`, add the same import there:
+
+```scss
+@import "tailwindcss";
+```
+
+### Step 4: Verify Angular Styles Config
+
+Open `angular.json` and check that the global styles file is registered.
+
+For CSS:
+
+```json
+"styles": [
+  "src/styles.css"
+]
+```
+
+For SCSS:
+
+```json
+"styles": [
+  "src/styles.scss"
+]
+```
+
+Angular usually creates this configuration automatically.
+
+### Step 5: Run the Project
+
+```bash
+npm start
+```
+
+or:
+
+```bash
+ng serve
+```
+
+### Step 6: Test Tailwind
+
+Open `app.html` or `app.component.html` and temporarily add:
+
+```html
+<div class="min-h-screen bg-slate-100 flex items-center justify-center">
+  <div class="bg-white shadow-xl rounded-xl p-10">
+    <h1 class="text-4xl font-bold text-blue-600">
+      Tailwind CSS is Working
+    </h1>
+
+    <button class="mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
+      Click Me
+    </button>
+  </div>
+</div>
+```
+
+If the page shows the background, card, heading color, shadow, and styled button, Tailwind CSS is installed correctly.
+
 ## Development Server
 
 Start the local development server:
