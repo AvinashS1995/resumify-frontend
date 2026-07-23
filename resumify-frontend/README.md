@@ -1,87 +1,99 @@
-# ResumifyFrontend
-
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.32.
-
-## Development server
-
-To start a local development server, run:
-
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
-
-Step 1: Install Tailwind CSS
-
-Open your project terminal and run:
-
-npm install tailwindcss @tailwindcss/postcss postcss --save-dev
-Step 2: Create .postcssrc.json
-
-In the project root (same level as package.json), create a file:
-
-.postcssrc.json
-
-Add:
-
 # Resumify Frontend
 
-Angular 20 + Tailwind CSS Project
+Resumify Frontend is an Angular 20 resume builder UI with user and admin experiences. It includes authentication screens, a user dashboard, template selection, an AI-assisted resume builder, and admin analytics pages for dashboard insights, template management, and user tracking.
 
----
+The app is built as a route-based Angular application with lazy-loaded standalone components for better initial load performance.
 
-# Prerequisites
+## Features
 
-Before starting, make sure you have installed:
+- User login and registration screens
+- Google authentication and forgot-password modal UI
+- User dashboard with resume summary cards and recent resume activity
+- Resume template selection with filters, search, ratings, badges, and previews
+- AI Builder screen with resume sections, quick suggestions, preview mode, and export action UI
+- Admin dashboard with KPI cards, activity feed, and analytics charts
+- Admin template management with upload modal, preview modal, search, filters, enable/disable toggles, and delete action
+- Admin user tracking with search, filters, sortable table, score labels, pagination UI, and action menu
+- Shared sticky navbar with notifications and profile settings
+- Route-based navigation with lazy-loaded pages
+- Tailwind CSS 4 design tokens and custom typography
+- ApexCharts integration for admin analytics charts
 
-- Node.js (Latest LTS Version)
+## Tech Stack
+
+- Angular 20
+- Angular Router
+- Angular Forms
+- Standalone Angular components
+- Tailwind CSS 4
+- ApexCharts with `ng-apexcharts`
+- TypeScript
+- Karma and Jasmine for unit testing
+
+## Project Structure
+
+```text
+src/
+  app/
+    app.config.ts
+    app.html
+    app.routes.ts
+    app.ts
+    screens.ts
+    components/
+      admin/
+        admin-dashboard.*
+        template-management.*
+        user-tracking.*
+      auth/
+        login-screen.*
+        register-screen.*
+      shared/
+        admin-sidebar.*
+        navbar.*
+        notifications-panel.*
+        profile-settings-modal.*
+        forgot-password-modal.ts
+        google-auth-modal.ts
+        notification.model.ts
+      user/
+        user-dashboard.*
+        template-selection.*
+        ai-builder.*
+  styles.css
+  main.ts
+```
+
+## Routes
+
+The application uses Angular Router with lazy-loaded standalone components.
+
+| Path | Screen |
+| --- | --- |
+| `/login` | Login screen |
+| `/register` | Register screen |
+| `/dashboard` | User dashboard |
+| `/templates` | Template selection |
+| `/ai-builder/:template` | AI resume builder |
+| `/admin/dashboard` | Admin analytics dashboard |
+| `/admin/templates` | Admin template management |
+| `/admin/users` | Admin user tracking |
+| `/` | Redirects to `/login` |
+| `**` | Redirects to `/login` |
+
+Example builder routes:
+
+```text
+/ai-builder/classic
+/ai-builder/modern
+/ai-builder/executive
+```
+
+## Prerequisites
+
+Install:
+
+- Node.js LTS
 - npm
 - Angular CLI
 
@@ -93,232 +105,124 @@ npm -v
 ng version
 ```
 
----
+## Installation
 
-# Clone the Project
-
-```bash
-git clone <repository-url>
-cd resumify-frontend
-```
-
----
-
-# Install Dependencies
+From the project folder:
 
 ```bash
 npm install
 ```
 
----
+## Development Server
 
-# Install Tailwind CSS
-
-Install the required Tailwind CSS packages:
+Start the local development server:
 
 ```bash
-npm install --save-dev tailwindcss @tailwindcss/postcss postcss
+npm start
 ```
 
----
+or:
 
-# Configure PostCSS
-
-Create a file named:
-
-```text
-.postcssrc.json
+```bash
+ng serve
 ```
-
-Add the following content:
-
-```json
-{
-  "plugins": {
-    "@tailwindcss/postcss": {}
-  }
-}
-```
-
----
-
-# Configure Global Styles
 
 Open:
 
 ```text
-src/styles.css
+http://localhost:4200/
 ```
 
-Replace the contents with:
-
-```css
-@import 'tailwindcss';
-```
-
-> If your project uses `styles.scss`, use the same import inside `styles.scss`.
-
----
-
-# Verify Angular Configuration
-
-Open `angular.json` and ensure the global styles file is configured.
-
-Example:
-
-```json
-"styles": [
-  "src/styles.css"
-]
-```
-
-or
-
-```json
-"styles": [
-  "src/styles.scss"
-]
-```
-
----
-
-# Run the Application
+If port `4200` is busy, use another port:
 
 ```bash
-npm start
+ng serve --port 4201
 ```
 
-or
+## Build
+
+Create a production build:
 
 ```bash
-ng serve
+npm run build
 ```
 
-Open your browser:
-
-```
-http://localhost:4200
-```
-
----
-
-# Verify Tailwind CSS
-
-Replace the contents of `app.component.html` with:
-
-```html
-<div class="min-h-screen bg-slate-100 flex items-center justify-center">
-  <div class="bg-white rounded-xl shadow-xl p-10">
-    <h1 class="text-4xl font-bold text-blue-600">Tailwind CSS is Working 🎉</h1>
-
-    <button class="mt-6 px-6 py-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700">
-      Click Me
-    </button>
-  </div>
-</div>
-```
-
-If the page is styled correctly, Tailwind CSS has been installed successfully.
-
----
-
-# Optional: Install VS Code Extensions
-
-Recommended extensions:
-
-- Tailwind CSS IntelliSense
-- Angular Language Service
-- Prettier
-- Error Lens
-- Material Icon Theme
-
----
-
-# Optional: Configure Prettier
-
-Install:
-
-```bash
-npm install --save-dev prettier prettier-plugin-tailwindcss
-```
-
-Create a `.prettierrc` file:
-
-```json
-{
-  "singleQuote": true,
-  "printWidth": 100,
-  "plugins": ["prettier-plugin-tailwindcss"]
-}
-```
-
-This automatically sorts Tailwind CSS classes when formatting your code.
-
----
-
-# Project Structure
+Build output is generated in:
 
 ```text
-resumify-frontend/
-│
-├── src/
-│   ├── app/
-│   ├── assets/
-│   └── styles.css
-│
-├── angular.json
-├── package.json
-├── .postcssrc.json
-├── README.md
-└── node_modules/
+dist/resumify-frontend/
 ```
 
----
-
-# Useful Commands
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Start development server:
-
-```bash
-npm start
-```
-
-or
-
-```bash
-ng serve
-```
-
-Build project:
-
-```bash
-ng build
-```
+## Tests
 
 Run unit tests:
+
+```bash
+npm test
+```
+
+or:
 
 ```bash
 ng test
 ```
 
-Watch mode:
+## Styling
 
-```bash
-ng build --watch
+Global styling lives in:
+
+```text
+src/styles.css
 ```
 
----
+The project uses Tailwind CSS with CSS variables for the design system:
 
-# Notes
+- `--background`
+- `--foreground`
+- `--card`
+- `--primary`
+- `--secondary`
+- `--muted`
+- `--accent`
+- `--border`
+- `--ring`
 
-- Angular Version: **20**
-- Tailwind CSS Version: **4**
-- No `tailwind.config.js` is required.
-- No `postcss.config.js` is required.
-- Only `.postcssrc.json` is needed for Tailwind CSS configuration.
+Fonts are loaded globally:
+
+- DM Sans for main UI text
+- Fraunces for display headings
+- JetBrains Mono for small metadata labels
+
+## Charts
+
+Admin dashboard charts use ApexCharts through `ng-apexcharts`.
+
+Current chart areas:
+
+- Growth Trends: area chart for resumes generated and new users
+- User Industries: donut chart by user sector
+- Template Usage: bar chart for template usage counts
+
+## Notes
+
+- Current data is static mock data inside the component files.
+- There is no backend API integration yet.
+- Authentication actions currently navigate between UI screens and do not call an auth service.
+- Resume export, upload, and admin actions are UI-only placeholders ready for backend integration.
+
+## Useful Commands
+
+```bash
+npm start
+npm run build
+npm test
+ng generate component components/example/example-name
+```
+
+## Recommended Next Steps
+
+- Connect authentication to a real backend service.
+- Move static mock data into Angular services.
+- Add route guards for user and admin pages.
+- Add API integration for resumes, templates, analytics, and users.
+- Add unit tests for route navigation and component interactions.
