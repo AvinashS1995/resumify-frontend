@@ -1,0 +1,210 @@
+<div class="fixed inset-0 z-40" (click)="close.emit()"></div>
+
+<section class="absolute right-0 top-full z-50 mt-2 w-[360px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-border bg-card shadow-2xl">
+  <div class="flex items-center justify-between border-b border-border px-5 py-4">
+    <div class="flex items-center gap-2">
+      <span class="text-sm font-semibold text-foreground">Notifications</span>
+      @if (unreadCount() > 0) {
+        <span class="rounded-full bg-primary px-2 py-0.5 text-xs font-bold text-white">{{ unreadCount() }}</span>
+      }
+    </div>
+    <div class="flex items-center gap-2">
+      @if (unreadCount() > 0) {
+        <button type="button" class="flex items-center gap-1 text-xs text-accent hover:underline" (click)="markAllRead.emit()">
+          <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="m18 6-7 7-3-3" />
+            <path d="m22 10-7 7-3-3" />
+          </svg>
+          Mark all read
+        </button>
+      }
+      <button type="button" class="ml-1 text-muted-foreground transition-colors hover:text-foreground" (click)="close.emit()" aria-label="Close notifications">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M18 6 6 18" />
+          <path d="m6 6 12 12" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="max-h-[440px] overflow-y-auto">
+    @if (notifications().length === 0) {
+      <div class="flex flex-col items-center px-6 py-12 text-center">
+        <div class="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+          <svg class="h-[22px] w-[22px] text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="m18 6-7 7-3-3" />
+            <path d="m22 10-7 7-3-3" />
+          </svg>
+        </div>
+        <p class="text-sm font-medium text-foreground">All caught up!</p>
+        <p class="mt-1 text-xs text-muted-foreground">No new notifications.</p>
+      </div>
+    } @else {
+      <div class="divide-y divide-border">
+        @for (notification of notifications(); track notification.id) {
+          <button
+            type="button"
+            class="flex w-full items-start gap-3 px-5 py-4 text-left transition-colors hover:bg-muted/50"
+            [class.bg-secondary/40]="!notification.read"
+            (click)="markRead.emit(notification.id)"
+          >
+            <div class="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl" [class]="iconBackground(notification.type)">
+              @switch (notification.type) {
+                @case ('resume') {
+                  <svg class="h-4 w-4" [class]="iconColor(notification.type)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z" />
+                    <path d="M14 2v6h6" />
+                  </svg>
+                }
+                @case ('ai') {
+                  <svg class="h-4 w-4" [class]="iconColor(notification.type)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M9.9 2.8 8.7 8.1 3.4 9.3l5.3 1.2 1.2 5.3 1.2-5.3 5.3-1.2-5.3-1.2z" />
+                    <path d="m19 14 .7 3.3L23 18l-3.3.7L19 22l-.7-3.3L15 18l3.3-.7z" />
+                  </svg>
+                }
+                @case ('achievement') {
+                  <svg class="h-4 w-4" [class]="iconColor(notification.type)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z" />
+                  </svg>
+                }
+                @default {
+                  <svg class="h-4 w-4" [class]="iconColor(notification.type)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 8v4" />
+                    <path d="M12 16h.01" />
+                  </svg>
+                }
+              }
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-start justify-between gap-2">
+                <span class="text-sm font-medium leading-tight" [class.text-foreground]="!notification.read" [class.text-muted-foreground]="notification.read">
+                  {{ notification.title }}
+                </span>
+                @if (!notification.read) {
+                  <span class="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary"></span>
+                }
+              </div>
+              <p class="mt-0.5 line-clamp-2 text-xs leading-relaxed text-muted-foreground">{{ notification.body }}</p>
+              <span class="mt-1 block text-xs text-muted-foreground/60">{{ notification.time }}</span>
+            </div>
+          </button>
+        }
+      </div>
+    }
+  </div>
+
+  <div class="border-t border-border px-5 py-3">
+    <button type="button" class="w-full text-center text-xs font-medium text-accent hover:underline" (click)="showAll.set(true)">
+      View all notifications
+    </button>
+  </div>
+</section>
+
+@if (showAll()) {
+  <div class="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+    <section class="flex max-h-[85vh] w-full max-w-lg flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-2xl">
+      <div class="flex shrink-0 items-center justify-between border-b border-border px-6 py-4">
+        <div class="flex items-center gap-2">
+          <svg class="h-4 w-4 text-primary" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M10.268 21a2 2 0 0 0 3.464 0" />
+            <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
+          </svg>
+          <h2 class="font-display text-lg font-semibold text-foreground">All Notifications</h2>
+          @if (unreadCount() > 0) {
+            <span class="rounded-full bg-primary px-2 py-0.5 text-xs font-bold text-white">{{ unreadCount() }}</span>
+          }
+        </div>
+        <div class="flex items-center gap-3">
+          @if (unreadCount() > 0) {
+            <button type="button" class="flex items-center gap-1 text-xs font-medium text-accent hover:underline" (click)="markAllRead.emit()">
+              <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="m18 6-7 7-3-3" />
+                <path d="m22 10-7 7-3-3" />
+              </svg>
+              Mark all read
+            </button>
+          }
+          <button type="button" class="text-muted-foreground transition-colors hover:text-foreground" (click)="showAll.set(false)" aria-label="Close all notifications">
+            <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex shrink-0 items-center gap-1 overflow-x-auto border-b border-border px-6 py-3">
+        <svg class="mr-1 h-3 w-3 shrink-0 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M22 3H2l8 9.46V19l4 2v-8.54z" />
+        </svg>
+        @for (item of filters; track item) {
+          <button
+            type="button"
+            class="whitespace-nowrap rounded-lg px-3 py-1 text-xs font-medium capitalize transition-colors"
+            [class.bg-primary]="filter() === item"
+            [class.text-white]="filter() === item"
+            [class.bg-muted]="filter() !== item"
+            [class.text-muted-foreground]="filter() !== item"
+            [class.hover:text-foreground]="filter() !== item"
+            (click)="filter.set(item)"
+          >
+            {{ filterLabel(item) }}
+          </button>
+        }
+      </div>
+
+      <div class="flex-1 divide-y divide-border overflow-y-auto">
+        @if (filteredNotifications().length === 0) {
+          <div class="flex flex-col items-center px-6 py-16 text-center">
+            <div class="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-muted">
+              <svg class="h-[22px] w-[22px] text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <path d="m18 6-7 7-3-3" />
+                <path d="m22 10-7 7-3-3" />
+              </svg>
+            </div>
+            <p class="text-sm font-medium text-foreground">No notifications here</p>
+            <p class="mt-1 text-xs text-muted-foreground">
+              {{ filter() === 'all' ? "You're all caught up!" : 'No ' + filter() + ' notifications yet.' }}
+            </p>
+          </div>
+        } @else {
+          @for (notification of filteredNotifications(); track notification.id) {
+            <button
+              type="button"
+              class="flex w-full items-start gap-4 px-6 py-4 text-left transition-colors hover:bg-muted/50"
+              [class.bg-secondary/40]="!notification.read"
+              (click)="markRead.emit(notification.id)"
+            >
+              <div class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl" [class]="iconBackground(notification.type)">
+                <span class="text-sm font-bold" [class]="iconColor(notification.type)">
+                  {{ notification.type === 'achievement' ? '★' : notification.type === 'ai' ? '✦' : notification.type === 'resume' ? '□' : '!' }}
+                </span>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-start justify-between gap-3">
+                  <span class="text-sm font-medium leading-snug" [class.text-foreground]="!notification.read" [class.text-muted-foreground]="notification.read">
+                    {{ notification.title }}
+                  </span>
+                  <div class="flex shrink-0 items-center gap-2">
+                    <span class="whitespace-nowrap text-xs text-muted-foreground/60">{{ notification.time }}</span>
+                    @if (!notification.read) {
+                      <span class="h-2 w-2 shrink-0 rounded-full bg-primary"></span>
+                    }
+                  </div>
+                </div>
+                <p class="mt-1 text-xs leading-relaxed text-muted-foreground">{{ notification.body }}</p>
+              </div>
+            </button>
+          }
+        }
+      </div>
+
+      <div class="shrink-0 border-t border-border bg-muted/20 px-6 py-3">
+        <p class="text-center text-xs text-muted-foreground">
+          Showing {{ filteredNotifications().length }} of {{ notifications().length }} notifications
+        </p>
+      </div>
+    </section>
+  </div>
+}

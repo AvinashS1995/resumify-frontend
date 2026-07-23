@@ -1,0 +1,383 @@
+<div class="flex min-h-screen flex-col bg-background">
+  <app-navbar currentScreen="ai-builder" />
+
+  <div class="flex items-center justify-between gap-3 border-b border-border bg-card px-4 py-3 sm:px-6">
+    <div class="flex items-center gap-3">
+      <span class="font-display hidden text-sm font-semibold text-foreground sm:block">AI Builder</span>
+      <span class="hidden text-xs text-muted-foreground sm:block">·</span>
+      <span class="hidden text-xs capitalize text-muted-foreground sm:block">{{ template() }} Template</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <button
+        type="button"
+        class="flex items-center gap-2 rounded-lg px-3 py-1.5 text-xs font-medium transition-colors"
+        [class.bg-primary]="previewMode()"
+        [class.text-white]="previewMode()"
+        [class.bg-muted]="!previewMode()"
+        [class.text-muted-foreground]="!previewMode()"
+        [class.hover:text-foreground]="!previewMode()"
+        (click)="togglePreview()"
+      >
+        <svg class="h-[13px] w-[13px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M2.1 12.5a11.7 11.7 0 0 1 19.8 0" />
+          <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8" />
+        </svg>
+        Preview
+      </button>
+      <button type="button" class="flex items-center gap-2 rounded-lg bg-accent px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-accent/90">
+        <svg class="h-[13px] w-[13px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <path d="M7 10l5 5 5-5" />
+          <path d="M12 15V3" />
+        </svg>
+        Export PDF
+      </button>
+    </div>
+  </div>
+
+  <div class="flex flex-1 overflow-hidden">
+    <div class="w-full shrink-0 overflow-y-auto border-r border-border lg:w-[480px]" [class.hidden]="previewMode()" [class.lg:flex]="previewMode()">
+      <div class="flex flex-col gap-4 p-4 sm:p-6">
+        <section class="overflow-hidden rounded-2xl border border-border">
+          <button type="button" class="flex w-full items-center justify-between bg-card px-5 py-4 transition-colors hover:bg-muted/50" (click)="toggleSection('personal')">
+            <span class="text-sm font-semibold text-foreground">Personal Information</span>
+            <span class="text-muted-foreground">{{ sectionOpen('personal') ? '⌃' : '⌄' }}</span>
+          </button>
+          @if (sectionOpen('personal')) {
+            <div class="bg-card px-5 pb-5 pt-1">
+              <div class="grid grid-cols-2 gap-3">
+                <label class="mb-4 block">
+                  <span class="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground">First Name</span>
+                  <input value="Avinash" class="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30" />
+                </label>
+                <label class="mb-4 block">
+                  <span class="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground">Last Name</span>
+                  <input value="Suryawanshi" class="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30" />
+                </label>
+              </div>
+              @for (field of [
+                ['Job Title / Headline', 'Frontend Developer'],
+                ['Email', 'ai.suryawanshi95@gmail.com'],
+                ['Portfolio / Website', 'yourportfolio.dev']
+              ]; track field[0]) {
+                <label class="mb-4 block">
+                  <span class="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground">{{ field[0] }}</span>
+                  <input [value]="field[1]" class="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30" />
+                </label>
+              }
+              <div class="grid grid-cols-2 gap-3">
+                <label class="mb-4 block">
+                  <span class="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground">Phone</span>
+                  <input value="+91-9096683915" class="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30" />
+                </label>
+                <label class="mb-4 block">
+                  <span class="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground">Location</span>
+                  <input value="Mumbai, Maharashtra 400076" class="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30" />
+                </label>
+              </div>
+              <div class="grid grid-cols-2 gap-3">
+                <label class="mb-4 block">
+                  <span class="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground">LinkedIn URL</span>
+                  <input placeholder="linkedin.com/in/username" class="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30" />
+                </label>
+                <label class="mb-4 block">
+                  <span class="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground">GitHub URL</span>
+                  <input placeholder="github.com/username" class="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30" />
+                </label>
+              </div>
+            </div>
+          }
+        </section>
+
+        <section class="overflow-hidden rounded-2xl border border-border">
+          <button type="button" class="flex w-full items-center justify-between bg-card px-5 py-4 transition-colors hover:bg-muted/50" (click)="toggleSection('summary')">
+            <span class="text-sm font-semibold text-foreground">Professional Summary</span>
+            <span class="text-muted-foreground">{{ sectionOpen('summary') ? '⌃' : '⌄' }}</span>
+          </button>
+          @if (sectionOpen('summary')) {
+            <div class="bg-card px-5 pb-5 pt-1">
+              <p class="mb-3 text-xs text-muted-foreground">A concise 2-4 sentence overview of your experience, skills, and value.</p>
+              <textarea rows="4" class="w-full resize-none rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30">Frontend Developer with 4+ years of experience working on enterprise Angular applications. Skilled in building role-based systems, dashboards, reports, and workflow-driven modules. Experience in product-based environment delivering scalable and user-focused solutions.</textarea>
+              <button type="button" class="mt-2 flex items-center gap-1.5 text-xs font-medium text-accent hover:underline" (click)="triggerAI(0)">
+                {{ aiButtonLabel(0, 'Rewrite with AI') }}
+              </button>
+            </div>
+          }
+        </section>
+
+        <section class="overflow-hidden rounded-2xl border border-border">
+          <button type="button" class="flex w-full items-center justify-between bg-card px-5 py-4 transition-colors hover:bg-muted/50" (click)="toggleSection('skills')">
+            <span class="text-sm font-semibold text-foreground">Technical Skills</span>
+            <span class="text-muted-foreground">{{ sectionOpen('skills') ? '⌃' : '⌄' }}</span>
+          </button>
+          @if (sectionOpen('skills')) {
+            <div class="bg-card px-5 pb-5 pt-1">
+              <p class="mb-3 text-xs text-muted-foreground">Group skills by category (e.g. Frontend, Tools, Database).</p>
+              @for (row of skillRows; track row.cat) {
+                <div class="mb-3 grid grid-cols-3 items-start gap-2">
+                  <input [value]="row.cat" placeholder="Category" class="col-span-1 rounded-xl border border-border bg-background px-3 py-2 text-xs text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30" />
+                  <input [value]="row.val" placeholder="Skills, comma-separated" class="col-span-2 rounded-xl border border-border bg-background px-3 py-2 text-xs text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30" />
+                </div>
+              }
+              <button type="button" class="mt-1 flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border py-2 text-xs font-medium text-muted-foreground transition-colors hover:border-primary hover:text-primary">+ Add Skill Category</button>
+              <button type="button" class="mt-2 flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors" [class]="aiButtonClass('skills')" (click)="triggerAI('skills')">
+                {{ aiButtonLabel('skills', 'Rewrite & Optimise Skills with AI') }}
+              </button>
+              <div class="mt-4">
+                <p class="mb-2 flex items-center gap-1.5 text-xs font-semibold text-foreground">✦ Quick-add from suggestions</p>
+                <div class="flex flex-wrap gap-2">
+                  @for (skill of skillOptions; track skill) {
+                    <button
+                      type="button"
+                      class="rounded-full border px-3 py-1.5 text-xs font-medium transition-all"
+                      [class.bg-primary]="selectedSkills().includes(skill)"
+                      [class.text-white]="selectedSkills().includes(skill)"
+                      [class.border-primary]="selectedSkills().includes(skill)"
+                      [class.bg-background]="!selectedSkills().includes(skill)"
+                      [class.border-border]="!selectedSkills().includes(skill)"
+                      [class.text-muted-foreground]="!selectedSkills().includes(skill)"
+                      [class.hover:border-primary/40]="!selectedSkills().includes(skill)"
+                      (click)="toggleSkill(skill)"
+                    >
+                      {{ skill }}
+                    </button>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        </section>
+
+        <section class="overflow-hidden rounded-2xl border border-border">
+          <button type="button" class="flex w-full items-center justify-between bg-card px-5 py-4 transition-colors hover:bg-muted/50" (click)="toggleSection('experience')">
+            <span class="text-sm font-semibold text-foreground">Professional Experience</span>
+            <span class="text-muted-foreground">{{ sectionOpen('experience') ? '⌃' : '⌄' }}</span>
+          </button>
+          @if (sectionOpen('experience')) {
+            <div class="bg-card px-5 pb-5 pt-1">
+              @for (exp of experiences; track exp.company; let i = $index) {
+                <div class="relative mb-4 rounded-xl border border-border bg-background p-4">
+                  <button type="button" class="absolute right-3 top-3 text-muted-foreground transition-colors hover:text-red-500">×</button>
+                  <div class="mb-3 grid grid-cols-2 gap-3">
+                    <input [value]="exp.company" class="rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm" />
+                    <input [value]="exp.role" class="rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm" />
+                  </div>
+                  <div class="mb-3 grid grid-cols-3 gap-3">
+                    <input [value]="exp.location" class="rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm" />
+                    <input [value]="exp.start" class="rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm" />
+                    <input [value]="exp.end" class="rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm" />
+                  </div>
+                  <textarea rows="3" placeholder="Describe your role, responsibilities, and measurable impact..." class="w-full resize-none rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30"></textarea>
+                  <button type="button" class="mt-2 flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors" [class]="aiButtonClass('exp-' + i)" (click)="triggerAI('exp-' + i)">
+                    {{ aiButtonLabel('exp-' + i, 'Rewrite with AI') }}
+                  </button>
+                </div>
+              }
+              <div class="mt-2">
+                <div class="mb-3 flex items-center gap-2">
+                  <span class="text-accent">✦</span>
+                  <span class="text-xs font-semibold text-foreground">AI Bullet Suggestions</span>
+                </div>
+                <div class="flex flex-col gap-2">
+                  @for (suggestion of suggestions; track suggestion; let i = $index) {
+                    <button type="button" class="flex items-start gap-2 rounded-xl border p-3 text-left text-xs leading-relaxed transition-all" [class.border-primary]="activePrompt() === i + 1 && !aiLoading()" [class.bg-secondary]="activePrompt() === i + 1 && !aiLoading()" [class.text-primary]="activePrompt() === i + 1 && !aiLoading()" [class.border-border]="activePrompt() !== i + 1 || aiLoading()" [class.bg-background]="activePrompt() !== i + 1 || aiLoading()" [class.text-muted-foreground]="activePrompt() !== i + 1 || aiLoading()" (click)="triggerAI(i + 1)">
+                      <span class="mt-0.5 shrink-0 text-accent">✦</span>
+                      {{ suggestion }}
+                    </button>
+                  }
+                </div>
+              </div>
+              <button type="button" class="mt-4 flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border py-2.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary hover:text-primary">+ Add Experience</button>
+            </div>
+          }
+        </section>
+
+        @for (section of [
+          { key: 'projects', title: 'Projects', badge: '' },
+          { key: 'achievements', title: 'Achievements', badge: 'Optional' },
+          { key: 'languages', title: 'Languages', badge: '' },
+          { key: 'education', title: 'Education', badge: '' }
+        ]; track section.key) {
+          <section class="overflow-hidden rounded-2xl border border-border">
+            <button type="button" class="flex w-full items-center justify-between bg-card px-5 py-4 transition-colors hover:bg-muted/50" (click)="toggleSection(section.key)">
+              <span class="flex items-center gap-2 text-sm font-semibold text-foreground">
+                {{ section.title }}
+                @if (section.badge) {
+                  <span class="rounded-full border border-border bg-muted px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">{{ section.badge }}</span>
+                }
+              </span>
+              <span class="text-muted-foreground">{{ sectionOpen(section.key) ? '⌃' : '⌄' }}</span>
+            </button>
+            @if (sectionOpen(section.key)) {
+              <div class="bg-card px-5 pb-5 pt-1">
+                @if (section.key === 'projects') {
+                  @for (project of projects; track project.name; let i = $index) {
+                    <div class="relative mb-4 rounded-xl border border-border bg-background p-4">
+                      <button type="button" class="absolute right-3 top-3 text-muted-foreground hover:text-red-500">×</button>
+                      <div class="mb-3 grid grid-cols-2 gap-3">
+                        <input [value]="project.name" class="rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm" />
+                        <input [value]="project.tech" class="rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm" />
+                      </div>
+                      <div class="mb-3 grid grid-cols-2 gap-3">
+                        <input [value]="project.start" class="rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm" />
+                        <input [value]="project.end" class="rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm" />
+                      </div>
+                      <textarea rows="3" placeholder="What you built, technologies used, and impact..." class="w-full resize-none rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm"></textarea>
+                      <button type="button" class="mt-2 flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors" [class]="aiButtonClass('proj-' + i)" (click)="triggerAI('proj-' + i)">
+                        {{ aiButtonLabel('proj-' + i, 'Rewrite with AI') }}
+                      </button>
+                    </div>
+                  }
+                  <button type="button" class="mt-1 flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border py-2.5 text-xs font-medium text-muted-foreground hover:border-primary hover:text-primary">+ Add Project</button>
+                }
+                @if (section.key === 'achievements') {
+                  <p class="mb-3 text-xs text-muted-foreground">Notable accomplishments, awards, or recognitions that stand out.</p>
+                  @for (achievement of achievements; track achievement) {
+                    <div class="mb-2 flex items-start gap-2">
+                      <span class="mt-2.5 shrink-0 text-xs text-accent">•</span>
+                      <textarea rows="2" class="flex-1 resize-none rounded-xl border border-border bg-background px-3 py-2 text-xs text-foreground">{{ achievement }}</textarea>
+                      <button type="button" class="mt-1.5 shrink-0 text-muted-foreground hover:text-red-500">×</button>
+                    </div>
+                  }
+                  <button type="button" class="mt-2 flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors" [class]="aiButtonClass('achievements')" (click)="triggerAI('achievements')">
+                    {{ aiButtonLabel('achievements', 'Rewrite All Achievements with AI') }}
+                  </button>
+                  <button type="button" class="mt-2 flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border py-2 text-xs font-medium text-muted-foreground hover:border-primary hover:text-primary">+ Add Achievement</button>
+                }
+                @if (section.key === 'languages') {
+                  <div class="flex flex-col gap-2">
+                    @for (language of languages; track language.lang) {
+                      <div class="flex items-center gap-3">
+                        <input [value]="language.lang" class="flex-1 rounded-xl border border-border bg-background px-3 py-2 text-xs text-foreground" />
+                        <select class="flex-1 rounded-xl border border-border bg-background px-3 py-2 text-xs text-foreground">
+                          @for (level of ['Native', 'Fluent', 'Professional', 'Conversational', 'Basic']; track level) {
+                            <option [selected]="level === language.level">{{ level }}</option>
+                          }
+                        </select>
+                        <button type="button" class="shrink-0 text-muted-foreground hover:text-red-500">×</button>
+                      </div>
+                    }
+                  </div>
+                  <button type="button" class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border py-2 text-xs font-medium text-muted-foreground hover:border-primary hover:text-primary">+ Add Language</button>
+                }
+                @if (section.key === 'education') {
+                  @for (edu of education; track edu.degree) {
+                    <div class="relative mb-4 rounded-xl border border-border bg-background p-4 last:mb-0">
+                      <button type="button" class="absolute right-3 top-3 text-muted-foreground hover:text-red-500">×</button>
+                      <input [value]="edu.degree" class="mb-3 w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm" />
+                      <input [value]="edu.school" class="mb-3 w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm" />
+                      <div class="grid grid-cols-2 gap-3">
+                        <input [value]="edu.start" class="rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm" />
+                        <input [value]="edu.end" class="rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm" />
+                      </div>
+                    </div>
+                  }
+                  <button type="button" class="flex w-full items-center justify-center gap-2 rounded-xl border border-dashed border-border py-2.5 text-xs font-medium text-muted-foreground hover:border-primary hover:text-primary">+ Add Education</button>
+                }
+              </div>
+            }
+          </section>
+        }
+      </div>
+    </div>
+
+    <div class="flex-1 items-start justify-center overflow-y-auto bg-muted/50 p-6 lg:flex lg:p-10" [class.flex]="previewMode()" [class.hidden]="!previewMode()" [class.lg:flex]="!previewMode()">
+      <div class="w-full max-w-[680px]">
+        <div class="mb-4 flex items-center justify-between">
+          <span class="font-mono text-xs uppercase tracking-widest text-muted-foreground">Live Preview</span>
+          <span class="text-xs text-muted-foreground">Auto-updates as you type</span>
+        </div>
+        <article class="overflow-hidden rounded-xl border border-border bg-white shadow-2xl shadow-primary/10" style="font-family: DM Sans, sans-serif; font-size: 11px">
+          <header class="px-8 py-5" [style.background-color]="headerBg()">
+            <h1 class="mb-0.5 text-xl font-bold leading-tight text-white">Avinash Suryawanshi</h1>
+            <div class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-white/75">
+              <span>Mumbai, Maharashtra 400076</span>
+              <span>+91-9096683915</span>
+              <span>ai.suryawanshi95&#64;gmail.com</span>
+              <span>linkedin</span>
+              <span>github</span>
+            </div>
+          </header>
+          <div class="space-y-4 px-8 py-5">
+            <section>
+              <h2 class="mb-1.5 border-b pb-1 text-xs font-bold uppercase tracking-widest" [style.color]="'#1B2B5E'" [style.border-color]="accent()">Professional Summary</h2>
+              <p class="leading-relaxed text-gray-600">Frontend Developer with 4+ years of experience working on enterprise Angular applications. Skilled in building role-based systems, dashboards, reports, and workflow-driven modules. Experience in product-based environment delivering scalable and user-focused solutions.</p>
+            </section>
+            <section>
+              <h2 class="mb-1.5 border-b pb-1 text-xs font-bold uppercase tracking-widest" [style.color]="'#1B2B5E'" [style.border-color]="accent()">Technical Skills</h2>
+              <div class="space-y-1">
+                @for (row of skillRows; track row.cat) {
+                  <div class="flex gap-2">
+                    <span class="w-24 shrink-0 font-semibold text-gray-800">{{ row.cat }}:</span>
+                    <span class="leading-relaxed text-gray-600">{{ row.val }}</span>
+                  </div>
+                }
+              </div>
+            </section>
+            <section>
+              <h2 class="mb-1.5 border-b pb-1 text-xs font-bold uppercase tracking-widest" [style.color]="'#1B2B5E'" [style.border-color]="accent()">Professional Experience</h2>
+              @for (exp of experiences; track exp.company) {
+                <div class="mb-3 last:mb-0">
+                  <div class="flex flex-wrap items-start justify-between gap-2">
+                    <div>
+                      <div class="font-bold text-gray-800">{{ exp.company }}</div>
+                      <div class="italic text-gray-500">{{ exp.role }} · {{ exp.location }}</div>
+                    </div>
+                    <div class="shrink-0 whitespace-nowrap text-gray-400">{{ exp.start }} - {{ exp.end }}</div>
+                  </div>
+                  <ul class="mt-1.5 space-y-0.5 text-gray-600">
+                    <li class="pl-3 leading-relaxed">• Built reusable UI components, dashboards, reports, and workflow-driven modules.</li>
+                    <li class="pl-3 leading-relaxed">• Implemented role-based access, filters, validations, and API-driven experiences.</li>
+                  </ul>
+                </div>
+              }
+            </section>
+            <section>
+              <h2 class="mb-1.5 border-b pb-1 text-xs font-bold uppercase tracking-widest" [style.color]="'#1B2B5E'" [style.border-color]="accent()">Projects</h2>
+              @for (project of projects; track project.name) {
+                <div class="mb-3 last:mb-0">
+                  <div class="flex flex-wrap items-start justify-between gap-2">
+                    <div class="font-bold text-gray-800">{{ project.name }} <span class="font-normal text-gray-500">| {{ project.tech }}</span></div>
+                    <div class="shrink-0 whitespace-nowrap text-gray-400">{{ project.start }} - {{ project.end }}</div>
+                  </div>
+                  <ul class="mt-1.5 space-y-0.5 text-gray-600">
+                    <li class="pl-3 leading-relaxed">• Developed enterprise modules, dashboards, forms, and reporting workflows.</li>
+                    <li class="pl-3 leading-relaxed">• Integrated REST APIs and optimized UI performance for data-heavy screens.</li>
+                  </ul>
+                </div>
+              }
+            </section>
+            <section>
+              <h2 class="mb-1.5 border-b pb-1 text-xs font-bold uppercase tracking-widest" [style.color]="'#1B2B5E'" [style.border-color]="accent()">Achievements</h2>
+              <ul class="space-y-0.5 text-gray-600">
+                @for (achievement of achievements; track achievement) {
+                  <li class="pl-3 leading-relaxed">• {{ achievement }}</li>
+                }
+              </ul>
+            </section>
+            <section>
+              <h2 class="mb-1.5 border-b pb-1 text-xs font-bold uppercase tracking-widest" [style.color]="'#1B2B5E'" [style.border-color]="accent()">Languages</h2>
+              <div class="flex gap-4 text-gray-600">
+                @for (language of languages; track language.lang) {
+                  <div class="flex items-center gap-1.5"><span class="h-1.5 w-1.5 rounded-full" [style.background-color]="accent()"></span>{{ language.lang }}</div>
+                }
+              </div>
+            </section>
+            <section>
+              <h2 class="mb-1.5 border-b pb-1 text-xs font-bold uppercase tracking-widest" [style.color]="'#1B2B5E'" [style.border-color]="accent()">Education</h2>
+              @for (edu of education; track edu.degree) {
+                <div class="mb-2 flex items-start justify-between last:mb-0">
+                  <div>
+                    <div class="font-semibold text-gray-800">{{ edu.degree }}</div>
+                    <div class="text-gray-500">{{ edu.school }}</div>
+                  </div>
+                  <div class="shrink-0 whitespace-nowrap text-gray-400">{{ edu.start }} - {{ edu.end }}</div>
+                </div>
+              }
+            </section>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</div>

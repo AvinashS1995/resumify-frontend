@@ -1,0 +1,247 @@
+<div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+  <section class="flex max-h-[90vh] w-full max-w-xl flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-2xl">
+    <div class="flex shrink-0 items-center justify-between border-b border-border px-6 py-4">
+      <h2 class="font-display text-lg font-semibold text-foreground">Profile Settings</h2>
+      <button type="button" class="text-muted-foreground transition-colors hover:text-foreground" (click)="close.emit()" aria-label="Close profile settings">
+        <svg class="h-[18px] w-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M18 6 6 18" />
+          <path d="m6 6 12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="flex shrink-0 gap-0 border-b border-border px-6">
+      @for (item of tabs; track item.key) {
+        <button
+          type="button"
+          class="-mb-px border-b-2 px-4 py-3 text-xs font-semibold transition-colors"
+          [class.border-primary]="tab() === item.key"
+          [class.text-primary]="tab() === item.key"
+          [class.border-transparent]="tab() !== item.key"
+          [class.text-muted-foreground]="tab() !== item.key"
+          [class.hover:text-foreground]="tab() !== item.key"
+          (click)="tab.set(item.key)"
+        >
+          {{ item.label }}
+        </button>
+      }
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-6">
+      @if (tab() === 'profile') {
+        <div class="flex flex-col gap-5">
+          <div class="flex items-center gap-4">
+            <div class="relative shrink-0">
+              <div class="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-xl font-bold text-white">JD</div>
+              <button type="button" class="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-accent text-white shadow-sm transition-colors hover:bg-accent/90" aria-label="Upload profile photo">
+                <svg class="h-[11px] w-[11px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z" />
+                  <circle cx="12" cy="13" r="3" />
+                </svg>
+              </button>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-foreground">Profile Photo</p>
+              <p class="text-xs text-muted-foreground">JPG, PNG or GIF - max 2 MB</p>
+              <button type="button" class="mt-0.5 text-xs text-primary hover:underline">Upload new photo</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <label>
+              <span class="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground">First Name</span>
+              <input type="text" [(ngModel)]="profile.firstName" name="firstName" class="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30" />
+            </label>
+            <label>
+              <span class="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground">Last Name</span>
+              <input type="text" [(ngModel)]="profile.lastName" name="lastName" class="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30" />
+            </label>
+          </div>
+
+          <label>
+            <span class="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground">Email Address</span>
+            <input type="email" [(ngModel)]="profile.email" name="profileEmail" class="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30" />
+          </label>
+
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <label>
+              <span class="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground">Phone</span>
+              <input type="text" [(ngModel)]="profile.phone" name="phone" class="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30" />
+            </label>
+            <label>
+              <span class="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground">Location</span>
+              <input type="text" [(ngModel)]="profile.location" name="location" class="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30" />
+            </label>
+          </div>
+
+          <label>
+            <span class="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground">Current Job Title</span>
+            <input type="text" [(ngModel)]="profile.jobTitle" name="jobTitle" class="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30" />
+          </label>
+
+          <label>
+            <span class="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground">Bio</span>
+            <textarea rows="3" [(ngModel)]="profile.bio" name="bio" class="w-full resize-none rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm text-foreground transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30"></textarea>
+          </label>
+        </div>
+      }
+
+      @if (tab() === 'security') {
+        <div class="flex flex-col gap-5">
+          <div>
+            <h3 class="mb-4 text-sm font-semibold text-foreground">Change Password</h3>
+            <div class="flex flex-col gap-4">
+              <label>
+                <span class="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground">Current Password</span>
+                <div class="relative">
+                  <input [type]="showOldPassword() ? 'text' : 'password'" placeholder="Enter current password" class="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 pr-10 text-sm transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30" />
+                  <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground" (click)="toggleOldPassword()" aria-label="Toggle current password">
+                    {{ showOldPassword() ? '◌' : '●' }}
+                  </button>
+                </div>
+              </label>
+              <label>
+                <span class="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground">New Password</span>
+                <div class="relative">
+                  <input [type]="showNewPassword() ? 'text' : 'password'" placeholder="Min. 8 characters" class="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 pr-10 text-sm transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30" />
+                  <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground" (click)="toggleNewPassword()" aria-label="Toggle new password">
+                    {{ showNewPassword() ? '◌' : '●' }}
+                  </button>
+                </div>
+              </label>
+              <label>
+                <span class="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground">Confirm New Password</span>
+                <input type="password" placeholder="Repeat new password" class="w-full rounded-xl border border-border bg-background px-3.5 py-2.5 text-sm transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-ring/30" />
+              </label>
+            </div>
+          </div>
+
+          <div class="border-t border-border pt-5">
+            <h3 class="mb-3 text-sm font-semibold text-foreground">Two-Factor Authentication</h3>
+            <div class="flex items-center justify-between rounded-xl bg-muted p-4">
+              <div>
+                <p class="text-sm font-medium text-foreground">Authenticator App</p>
+                <p class="mt-0.5 text-xs text-muted-foreground">Use an app like Google Authenticator</p>
+              </div>
+              <button type="button" class="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-primary/90">Enable</button>
+            </div>
+          </div>
+
+          <div class="border-t border-border pt-5">
+            <h3 class="mb-3 text-sm font-semibold text-foreground">Active Sessions</h3>
+            @for (session of sessions; track session.device) {
+              <div class="flex items-center justify-between border-b border-border py-2.5 last:border-0">
+                <div>
+                  <p class="text-sm font-medium text-foreground">{{ session.device }}</p>
+                  <p class="text-xs text-muted-foreground">{{ session.location }} · {{ session.time }}</p>
+                </div>
+                @if (session.current) {
+                  <span class="rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-600">Current</span>
+                } @else {
+                  <button type="button" class="text-xs text-red-600 hover:underline">Revoke</button>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      @if (tab() === 'notifications') {
+        <div class="flex flex-col gap-1">
+          <p class="mb-4 text-xs text-muted-foreground">Choose what you want to be notified about.</p>
+          @for (preference of preferences; track preference.key) {
+            <div class="flex items-center justify-between border-b border-border py-3.5 last:border-0">
+              <div>
+                <p class="text-sm font-medium text-foreground">{{ preference.title }}</p>
+                <p class="text-xs text-muted-foreground">{{ preference.desc }}</p>
+              </div>
+              <button
+                type="button"
+                class="relative h-6 w-10 shrink-0 rounded-full transition-colors"
+                [class.bg-primary]="notificationPrefs[preference.key]"
+                [class.bg-border]="!notificationPrefs[preference.key]"
+                (click)="togglePreference(preference.key)"
+                [attr.aria-label]="'Toggle ' + preference.title"
+              >
+                <span
+                  class="absolute top-1 h-4 w-4 rounded-full bg-white shadow transition-transform"
+                  [class.translate-x-5]="notificationPrefs[preference.key]"
+                  [class.translate-x-1]="!notificationPrefs[preference.key]"
+                ></span>
+              </button>
+            </div>
+          }
+        </div>
+      }
+
+      @if (tab() === 'account') {
+        <div class="flex flex-col gap-5">
+          <div>
+            <h3 class="mb-3 text-sm font-semibold text-foreground">Plan & Billing</h3>
+            <div class="flex items-center justify-between rounded-xl bg-muted p-4">
+              <div>
+                <p class="text-sm font-semibold text-foreground">Free Plan</p>
+                <p class="mt-0.5 text-xs text-muted-foreground">Up to 3 resumes · Basic AI analysis</p>
+              </div>
+              <button type="button" class="rounded-lg bg-accent px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-accent/90">Upgrade to Pro</button>
+            </div>
+          </div>
+
+          <div class="border-t border-border pt-5">
+            <h3 class="mb-3 text-sm font-semibold text-foreground">Data & Privacy</h3>
+            <div class="flex flex-col gap-2">
+              <button type="button" class="flex items-center justify-between rounded-xl border border-border p-3.5 text-left transition-colors hover:bg-muted">
+                <span class="text-sm text-foreground">Download my data</span>
+                <span class="text-xs text-muted-foreground">Export as ZIP</span>
+              </button>
+              <button type="button" class="flex items-center justify-between rounded-xl border border-border p-3.5 text-left transition-colors hover:bg-muted">
+                <span class="text-sm text-foreground">Privacy settings</span>
+                <span class="text-xs text-muted-foreground">Manage</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="border-t border-border pt-5">
+            <h3 class="mb-3 text-sm font-semibold text-red-600">Danger Zone</h3>
+            <div class="rounded-xl border border-red-200 bg-red-50 p-4">
+              <p class="mb-1 text-sm font-medium text-foreground">Delete Account</p>
+              <p class="mb-3 text-xs text-muted-foreground">This action is permanent and cannot be undone. All your resumes will be deleted.</p>
+              <button type="button" class="rounded-lg border border-red-300 px-3 py-1.5 text-xs font-semibold text-red-600 transition-colors hover:bg-red-100">Delete my account</button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="flex shrink-0 items-center justify-between border-t border-border bg-card px-6 py-4">
+      <button type="button" class="rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-muted" (click)="close.emit()">
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="flex items-center gap-2 rounded-xl bg-primary px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/90 disabled:opacity-70"
+        [disabled]="saving()"
+        (click)="save()"
+      >
+        @if (saving()) {
+          <svg class="h-[14px] w-[14px] animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 12a9 9 0 1 1-6.2-8.56" />
+          </svg>
+          Saving...
+        } @else if (saved()) {
+          <svg class="h-[14px] w-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="m20 6-11 11-5-5" />
+          </svg>
+          Saved!
+        } @else {
+          <svg class="h-[14px] w-[14px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8A2 2 0 0 1 21 8.8V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
+            <path d="M17 21v-8H7v8" />
+            <path d="M7 3v5h8" />
+          </svg>
+          Save Changes
+        }
+      </button>
+    </div>
+  </section>
+</div>
